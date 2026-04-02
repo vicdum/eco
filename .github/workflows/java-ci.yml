@@ -1,6 +1,11 @@
 name: Java CI
 
-on: [ push, pull_request, workflow_dispatch ]
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  release:
+    types: [published]
 
 jobs:
   build:
@@ -36,6 +41,7 @@ jobs:
         with:
           name: eco-${{ github.ref_name }}
           path: build/libs/eco-*-all.jar
+          if-no-files-found: error
           retention-days: 1
 
   release:
