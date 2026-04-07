@@ -1,4 +1,4 @@
-package com.willfp.eco.internal.spigot.proxy.v1_21_5
+package com.willfp.eco.internal.spigot.proxy.v26_1_1
 
 import com.willfp.eco.internal.spigot.proxies.PlayerHandlerProxy
 import com.willfp.eco.internal.spigot.proxy.common.toNMS
@@ -35,12 +35,11 @@ class PlayerHandler : PlayerHandlerProxy {
                 .has(DataComponents.MAX_DAMAGE)
         ) {
             val orb = EntityType.EXPERIENCE_ORB.create(handle.level(), EntitySpawnReason.COMMAND)
-                ?: return finalAmount
-            orb.value = finalAmount
-            orb.spawnReason = ExperienceOrb.SpawnReason.CUSTOM
+            orb?.value = finalAmount
+            orb!!.spawnReason = ExperienceOrb.SpawnReason.CUSTOM
             orb.setPosRaw(handle.x, handle.y, handle.z)
             val possibleDurabilityFromXp = EnchantmentHelper.modifyDurabilityToRepairFromXp(
-                handle.serverLevel(), itemStack, amount
+                handle.level(), itemStack, amount
             )
             var i = possibleDurabilityFromXp.coerceAtMost(itemStack.damageValue)
             val consumedExperience = if (i > 0) i * amount / possibleDurabilityFromXp else possibleDurabilityFromXp
